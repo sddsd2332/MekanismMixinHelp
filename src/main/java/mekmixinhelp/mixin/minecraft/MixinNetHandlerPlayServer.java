@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemElytra;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.network.PacketThreadUtil;
@@ -18,10 +19,12 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(NetHandlerPlayServer.class)
 public abstract class MixinNetHandlerPlayServer implements INetHandlerPlayServer, ITickable {
-
 
     @Shadow
     public EntityPlayerMP player;
@@ -52,39 +55,30 @@ public abstract class MixinNetHandlerPlayServer implements INetHandlerPlayServer
                 this.player.setSprinting(false);
                 break;
             case STOP_SLEEPING:
-
                 if (this.player.isPlayerSleeping()) {
                     this.player.wakeUpPlayer(false, true, true);
                     this.targetPos = new Vec3d(this.player.posX, this.player.posY, this.player.posZ);
                 }
-
                 break;
             case START_RIDING_JUMP:
-
                 if (this.player.getRidingEntity() instanceof IJumpingMount) {
                     IJumpingMount ijumpingmount1 = (IJumpingMount) this.player.getRidingEntity();
                     int i = packetIn.getAuxData();
-
                     if (ijumpingmount1.canJump() && i > 0) {
                         ijumpingmount1.handleStartJump(i);
                     }
                 }
-
                 break;
             case STOP_RIDING_JUMP:
-
                 if (this.player.getRidingEntity() instanceof IJumpingMount) {
                     IJumpingMount ijumpingmount = (IJumpingMount) this.player.getRidingEntity();
                     ijumpingmount.handleStopJump();
                 }
-
                 break;
             case OPEN_INVENTORY:
-
                 if (this.player.getRidingEntity() instanceof AbstractHorse) {
                     ((AbstractHorse) this.player.getRidingEntity()).openGUI(this.player);
                 }
-
                 break;
             case START_FALL_FLYING:
                 if (!tryToStartFallFlying(player)) {
@@ -100,12 +94,16 @@ public abstract class MixinNetHandlerPlayServer implements INetHandlerPlayServer
     public boolean tryToStartFallFlying(EntityPlayer player) {
         if (!player.onGround && !player.isElytraFlying() && !player.isInWater() && !player.isPotionActive(MobEffects.LEVITATION)) {
             ItemStack itemstack = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-            if (itemstack.getItem() instanceof ElytraMixinHelp help && help.canElytraFly(itemstack, player)) {
-                this.player.setElytraFlying();
-                return true;
+            if (itemstack.getItem() instanceof ItemElytra) {
+                ElytraMixinHelp help = (ElytraMixinHelp) itemstack.getItem();
+                if (help.canElytraFly(itemstack, player)) {
+                    this.player.setElytraFlying();
+                    return true;
+                }
             }
         }
         return false;
     }
+
 
 }
