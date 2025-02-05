@@ -1,18 +1,17 @@
 {
-	"package": "mekmixinhelp.mixin.minecraft",
-	"refmap": "mixins.${mod_id}.refmap.json",
-	"target": "@env(DEFAULT)",
-	"minVersion": "0.8",
-	"compatibilityLevel": "JAVA_8",
-	"mixins": [
-		"MinxinEntityLivingBase",
-		"MixinEntityEnderman",
-		"MixinItemElytra",
-		"MixinNetHandlerPlayServer"
-	],
-	"server": [],
-	"client": [
-		"MixinEntityPlayerSP",
-		"MixinRenderItem"
-	]
+  "package": "mekmixinhelp.mixin.minecraft",
+  "refmap": "mixins.${mod_id}.refmap.json",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "MinxinEntityLivingBase",
+    "MixinEntityEnderman",
+    "MixinNetHandlerPlayServer"
+  ],
+  "server": [],
+  "client": [
+    "MixinEntityPlayerSP",
+    "MixinRenderItem"
+  ]
 }

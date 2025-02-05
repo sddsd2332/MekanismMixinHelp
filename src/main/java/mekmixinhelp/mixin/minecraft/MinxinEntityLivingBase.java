@@ -39,16 +39,14 @@ public abstract class MinxinEntityLivingBase extends Entity {
         boolean flag = this.getFlag(7);
         if (flag && !this.onGround && !this.isRiding() && !this.isPotionActive(MobEffects.LEVITATION)) {
             ItemStack itemstack = this.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
-            flag = itemstack.getItem() instanceof ElytraMixinHelp help && help.canElytraFly(itemstack, ((EntityLivingBase) (Object) this)) && help.elytraFlightTick(itemstack, ((EntityLivingBase) (Object) this), this.ticksElytraFlying);
-            if (false)
-                if (itemstack.getItem() == Items.ELYTRA && ItemElytra.isUsable(itemstack)) {
-                    flag = true;
-                    if (!this.world.isRemote && (this.ticksElytraFlying + 1) % 20 == 0) {
-                        itemstack.damageItem(1, ((EntityLivingBase) (Object) this));
-                    }
-                } else {
-                    flag = false;
+            if (itemstack.getItem() == Items.ELYTRA && ItemElytra.isUsable(itemstack)) {
+                flag = true;
+                if (!this.world.isRemote && (this.ticksElytraFlying + 1) % 20 == 0) {
+                    itemstack.damageItem(1, ((EntityLivingBase) (Object) this));
                 }
+            } else {
+                flag = itemstack.getItem() instanceof ElytraMixinHelp help && help.canElytraFly(itemstack, ((EntityLivingBase) (Object) this)) && help.elytraFlightTick(itemstack, ((EntityLivingBase) (Object) this), this.ticksElytraFlying);
+            }
         } else {
             flag = false;
         }
