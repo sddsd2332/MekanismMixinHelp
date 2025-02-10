@@ -7,6 +7,7 @@ import mekanism.common.item.ItemBlockTransmitter;
 import mekanism.common.tier.BaseTier;
 import mekanism.common.util.MekanismUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
@@ -26,14 +27,13 @@ import java.util.Locale;
 @SideOnly(Side.CLIENT)
 public abstract class MixinRenderItem implements IResourceManagerReloadListener {
 
-    @Shadow
-    public float zLevel;
 
-
-    @Inject(method = "renderItemAndEffectIntoGUI(Lnet/minecraft/entity/EntityLivingBase;Lnet/minecraft/item/ItemStack;II)V", at = @At("TAIL"))
-    public void renderItemAndEffectIntoGUI(EntityLivingBase entityLivingBase, ItemStack stack, int xPosition, int yPosition, CallbackInfo ci) {
+    @Inject(method = "renderItemOverlayIntoGUI",at = @At("TAIL"))
+    public void renderItemOverlayIntoGUI(FontRenderer fr, ItemStack stack, int xPosition, int yPosition, String text, CallbackInfo ci){
         if (!stack.isEmpty()) {
-            this.zLevel += 50.0F;
+            GlStateManager.enableDepth();
+            GlStateManager.enableBlend();
+            GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
             if (stack.getItem() instanceof ItemBlockTransmitter transmitter) {
                 TransmissionType transmission = BlockStateTransmitter.TransmitterType.values()[stack.getItemDamage()].getTransmission();
                 if (transmission == TransmissionType.GAS || transmission == TransmissionType.HEAT || transmission == TransmissionType.ENERGY) {
@@ -50,7 +50,6 @@ public abstract class MixinRenderItem implements IResourceManagerReloadListener 
                     GlStateManager.popMatrix();
                 }
             }
-            this.zLevel -= 50.0F;
         }
     }
 
