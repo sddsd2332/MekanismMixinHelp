@@ -10,6 +10,7 @@
   "mixins": [
     "MinxinEntityLivingBase",
     "MixinEntityEnderman",
+    "MixinEntityPlayer",
     "MixinNetHandlerPlayServer"
   ],
   "server": [],
