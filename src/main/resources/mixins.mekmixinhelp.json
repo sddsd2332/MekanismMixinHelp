@@ -1,6 +1,6 @@
 {
   "package": "mekmixinhelp.mixin.minecraft",
-  "refmap": "mixins.${mod_id}.refmap.json",
+  "refmap": "mixins.mekmixinhelp.refmap.json",
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "compatibilityLevel": "JAVA_8",
