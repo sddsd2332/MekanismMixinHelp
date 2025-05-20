@@ -19,6 +19,7 @@ public class MekanismMixinHelpLateMixinLoader implements ILateMixinLoader {
         addModdedMixinCFG("mixins.mekmixinhelp.extrabotany.json", "extrabotany");
         addModdedMixinCFG("mixins.mekmixinhelp.tconevo.json", "tconevo");
         addModdedMixinCFG("mixins.mekmixinhelp.jei.json","jei");
+        addModdedMixinCFG("mixins.mekmixinhelp.mekeng.json","mekeng");
     }
 
     @Override

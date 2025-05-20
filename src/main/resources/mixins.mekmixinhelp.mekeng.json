@@ -1,0 +1,17 @@
+{
+  "package": "mekmixinhelp.mixin.mekeng",
+  "refmap": "mixins.mekmixinhelp.refmap.json",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "MixinGasHandlerAdapter",
+    "MixinGasInvHandler",
+    "MixinGasNetworkAdapter",
+    "MixinItemGasHandler",
+    "MixinPartP2PGases"
+  ],
+  "server": [],
+  "client": [
+  ]
+}

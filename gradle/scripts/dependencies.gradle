@@ -82,4 +82,7 @@ dependencies {
     implementation rfg.deobf("curse.maven:botania-225643:3330934")
     implementation rfg.deobf("curse.maven:extrabotany-299086:3112313")
     compileOnly rfg.deobf(files('libs/tconevo-1.12.2-1.0.49.jar'))
+    implementation rfg.deobf('curse.maven:ae2-extended-life-570458:6302098')
+    implementation rfg.deobf('curse.maven:ae2-fluid-crafting-rework-623955:5405482')
+    implementation rfg.deobf('curse.maven:mekanism-energistics-1027681:5775101')
 }
