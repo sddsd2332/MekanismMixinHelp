@@ -8,7 +8,8 @@
     "MixinEntityGaiaIII",
     "MixinEntitySkullLandmine",
     "MixinEntitySkullMinion",
-    "MixinEntityVoidHerrscher"
+    "MixinEntityVoidHerrscher",
+    "MixinItemAFORing"
   ],
   "server": [],
   "client": []

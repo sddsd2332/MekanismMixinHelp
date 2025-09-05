@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class ExtraBotanyMixinConfig {
 
-    public static boolean GaiaIIIenabledBaubles, VoidHerrscherenabledBaubles;
+    public static boolean GaiaIIIenabledBaubles, VoidHerrscherenabledBaubles, closeAFORing;
     public static String[] GaiaIIIValidMods;
     public static String[] VoidHerrscherValidItem = new String[]{};
     public static String[] VoidHerrscherValidMods;
@@ -46,6 +46,9 @@ public class ExtraBotanyMixinConfig {
         //空律饰品栏相关
         property = config.get(Configuration.CATEGORY_GENERAL, "Herrscher of the Void Baubles checked", false, "Herrscher of the Void was allowed to inspect Baubles");
         VoidHerrscherenabledBaubles = property.getBoolean();
+
+        property = config.get(Configuration.CATEGORY_GENERAL, "Close AFO Ring", true, "Turn off the work of the Ring of Omnipotence");
+        closeAFORing = property.getBoolean();
 
         config.save();
     }
