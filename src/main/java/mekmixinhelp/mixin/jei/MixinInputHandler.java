@@ -1,6 +1,6 @@
 package mekmixinhelp.mixin.jei;
 
-import mekanism.client.gui.GuiFactory;
+import mekanism.client.gui.IJeiFactoryRecipe;
 import mezz.jei.gui.recipes.RecipesGui;
 import mezz.jei.input.InputHandler;
 import net.minecraft.client.gui.GuiScreen;
@@ -26,7 +26,7 @@ public class MixinInputHandler {
      */
     @Inject(method = "handleMouseClick", at = @At(value = "INVOKE", target = "Lmezz/jei/input/InputHandler;handleGlobalKeybinds(I)Z"), cancellable = true)
     public void addFactoryRecipe(GuiScreen guiScreen, int mouseButton, int mouseX, int mouseY, CallbackInfoReturnable<Boolean> cir) {
-        if (guiScreen instanceof GuiFactory factory) {
+        if (guiScreen instanceof IJeiFactoryRecipe factory) {
             if (factory.getJeiRecipe(mouseX, mouseY)) {
                 List<String> recipeCategoryUids = factory.getRecipe();
                 if (!recipeCategoryUids.isEmpty()) {

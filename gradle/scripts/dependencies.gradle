@@ -70,18 +70,19 @@ dependencies {
     implementation 'curse.maven:redstone-flux-270789:2920436'
     implementation rfg.deobf('curse.maven:CTM-267602:2915363')
     implementation 'curse.maven:industrial-craft-242638:3838713'
-    implementation 'curse.maven:the-one-probe-245211:2667280'
+    implementation rfg.deobf('curse.maven:the-one-probe-245211:2667280')
     implementation 'curse.maven:flux-networks-248020:3178199'
     runtimeOnly 'curse.maven:ftb-library-237167:2985811'
     runtimeOnly 'curse.maven:ftb-utilities-237102:3157548'
     runtimeOnly 'curse.maven:had-enough-characters-640802:4035773'
     runtimeOnly 'curse.maven:better-advancements-272515:2685984'
     runtimeOnly 'curse.maven:MmmMmmMmmMmm-225738:2503041'
-    implementation rfg.deobf(files('libs/Mekanism-CE-Unofficial-All-9.9.1.227-dev.jar'))
+    implementation rfg.deobf(files('libs/Mekanism-CE-Unofficial-All-9.9.1.233-dev.jar'))
     implementation rfg.deobf("curse.maven:baubles-227083:2518667")
     implementation rfg.deobf("curse.maven:botania-225643:3330934")
     implementation rfg.deobf("curse.maven:extrabotany-299086:3112313")
     compileOnly rfg.deobf(files('libs/tconevo-1.12.2-1.0.49.jar'))
+    implementation rfg.deobf(files('libs/MekanismMoreMekaSuitModules-1.0.6-dev.jar'))
     implementation rfg.deobf('curse.maven:ae2-extended-life-570458:6302098')
     implementation rfg.deobf('curse.maven:ae2-fluid-crafting-rework-623955:5405482')
     implementation rfg.deobf('curse.maven:mekanism-energistics-1027681:5775101')
