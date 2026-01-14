@@ -7,17 +7,18 @@ import mekanism.common.Version;
 import mekanism.common.base.IModule;
 import mekanism.common.config.MekanismConfig;
 import mekanism.common.network.PacketSimpleGui;
-import mekmixinhelp.common.config.ExtraBotanyMixinConfig;
+import mekmixinhelp.common.config.MekceuMixinConfig;
 import mekmixinhelp.mekmixinhelp.Tags;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.util.CompoundDataFixer;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 import java.io.File;
@@ -36,8 +37,8 @@ public class MekanismMixinHelp implements IModule {
 
     public static Version versionNumber = new Version(999, 999, 999);
     public static final int DATA_VERSION = 1;
-    public static Configuration ExtraBotanyMixin;
 
+    public static Configuration config;
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
@@ -62,14 +63,8 @@ public class MekanismMixinHelp implements IModule {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        if (Loader.isModLoaded("extrabotany")) {
-            ExtraBotanyMixin = new Configuration(new File("config/MekanismMixinHelp/Mods/ExtraBotanyMixin.cfg"));
-        }
-
-        if (Loader.isModLoaded("extrabotany")) {
-            ExtraBotanyMixinConfig.initConfig(ExtraBotanyMixin.getConfigFile());
-        }
-
+        config = new Configuration(new File("config/mekanism/MekanismMixinHelp.cfg"));
+        loadConfiguration();
     }
 
     @Override
@@ -87,5 +82,18 @@ public class MekanismMixinHelp implements IModule {
 
     }
 
+    @SubscribeEvent
+    public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
+        if (event.getModID().equals(Mekanism.MODID) || event.getModID().equals(MekanismMixinHelp.MODID)) {
+            loadConfiguration();
+        }
+    }
+
+    public void loadConfiguration() {
+        MekceuMixinConfig.local().config.load(config);
+        if (config.hasChanged()) {
+            config.save();
+        }
+    }
 
 }

@@ -1,0 +1,13 @@
+{
+  "package": "mekmixinhelp.mixin.draconicevolution",
+  "refmap": "mixins.mekmixinhelp.refmap.json",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "MixinTileCraftingInjector"
+  ],
+  "server": [],
+  "client": [
+  ]
+}

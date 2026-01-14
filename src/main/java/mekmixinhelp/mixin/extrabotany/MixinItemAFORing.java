@@ -1,7 +1,7 @@
 package mekmixinhelp.mixin.extrabotany;
 
 import com.meteor.extrabotany.common.item.equipment.bauble.ItemAFORing;
-import mekmixinhelp.common.config.ExtraBotanyMixinConfig;
+import mekmixinhelp.common.config.MekceuMixinConfig;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,7 +14,7 @@ public class MixinItemAFORing {
 
     @Inject(method = "onWornTick", at = @At("HEAD"), cancellable = true)
     public void fix(ItemStack stack, EntityLivingBase entity, CallbackInfo ci) {
-        if (ExtraBotanyMixinConfig.closeAFORing) {
+        if (MekceuMixinConfig.current().config.closeAFORing.val()) {
             ci.cancel();
         }
     }

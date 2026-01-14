@@ -5,7 +5,7 @@ import com.meteor.extrabotany.api.entity.IEntityWithShield;
 import com.meteor.extrabotany.common.core.config.ConfigHandler;
 import com.meteor.extrabotany.common.entity.gaia.EntityGaiaIII;
 import mekanism.api.gear.Magnetic;
-import mekmixinhelp.common.config.ExtraBotanyMixinConfig;
+import mekmixinhelp.common.config.MekceuMixinConfig;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,8 +23,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import vazkii.botania.api.boss.IBotaniaBoss;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Mixin(EntityGaiaIII.class)
 public abstract class MixinEntityGaiaIII extends EntityLiving implements IBotaniaBoss, IEntityWithShield, IEntityAdditionalSpawnData {
@@ -54,7 +54,7 @@ public abstract class MixinEntityGaiaIII extends EntityLiving implements IBotani
             }
         }
 
-        if (ExtraBotanyMixinConfig.GaiaIIIenabledBaubles){
+        if (MekceuMixinConfig.current().config.GaiaIIIenabledBaubles.val()) {
             BaublesDisarmInventory(player);
         }
 
@@ -89,9 +89,9 @@ public abstract class MixinEntityGaiaIII extends EntityLiving implements IBotani
     private static boolean check(EntityPlayer player) {
         if (player.isCreative()) {
             return true;
-        } else if (!ConfigHandler.GAIA_DISARM){ //缴械是关闭的情况下 ,不应该继续检查背包
+        } else if (!ConfigHandler.GAIA_DISARM) { //缴械是关闭的情况下 ,不应该继续检查背包
             return true;
-        }else if (!match(player.getHeldItemMainhand())) {
+        } else if (!match(player.getHeldItemMainhand())) {
             return false;
         } else {
             for (int i = 0; i < player.inventory.getSizeInventory(); ++i) {
@@ -107,7 +107,7 @@ public abstract class MixinEntityGaiaIII extends EntityLiving implements IBotani
                 }
             }
 
-            if (ExtraBotanyMixinConfig.GaiaIIIenabledBaubles) {
+            if (MekceuMixinConfig.current().config.GaiaIIIenabledBaubles.val()) {
                 IItemHandler baubles = BaublesApi.getBaublesHandler(player);
                 for (int i = 0; i < baubles.getSlots(); i++) {
                     ItemStack stackAt = baubles.getStackInSlot(i);
@@ -129,6 +129,7 @@ public abstract class MixinEntityGaiaIII extends EntityLiving implements IBotani
     @Unique
     private static final Map<Item, Boolean> ITEMS_CACHE = new HashMap<>();
 
+    private static final Set<String> GaiaIIImatchModId = new HashSet<>();
 
     /**
      * @author sddsd2332
@@ -144,7 +145,8 @@ public abstract class MixinEntityGaiaIII extends EntityLiving implements IBotani
                 return true;
             }
         }
-        return ITEMS_CACHE.computeIfAbsent(stack.getItem(), item -> ExtraBotanyMixinConfig.GaiaIIImatchModId.contains(item.delegate.name().getNamespace()));
+
+        return ITEMS_CACHE.computeIfAbsent(stack.getItem(), item -> Arrays.stream(MekceuMixinConfig.current().config.GaiaIIIValidMods.get()).anyMatch(string -> item.delegate.name().getNamespace().contains(string)));
     }
 
 

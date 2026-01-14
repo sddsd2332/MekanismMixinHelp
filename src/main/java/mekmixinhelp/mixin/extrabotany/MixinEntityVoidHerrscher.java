@@ -5,7 +5,7 @@ import com.meteor.extrabotany.api.entity.IEntityWithShield;
 import com.meteor.extrabotany.common.core.config.ConfigHandler;
 import com.meteor.extrabotany.common.entity.gaia.EntityVoidHerrscher;
 import mekanism.api.gear.Magnetic;
-import mekmixinhelp.common.config.ExtraBotanyMixinConfig;
+import mekmixinhelp.common.config.MekceuMixinConfig;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,6 +22,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import vazkii.botania.api.boss.IBotaniaBoss;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,7 +39,7 @@ public abstract class MixinEntityVoidHerrscher extends EntityCreature implements
      */
     @Overwrite(remap = false)
     private static boolean match(ItemStack stack) {
-        String[] whitelist = ExtraBotanyMixinConfig.VoidHerrscherValidItem;
+        String[] whitelist = MekceuMixinConfig.current().config.VoidHerrscherValidItem.get();
         for (String s : whitelist) {
             ItemStack compared = parseItems(s);
             compared.setCount(stack.getCount());
@@ -46,7 +47,7 @@ public abstract class MixinEntityVoidHerrscher extends EntityCreature implements
                 return true;
             }
         }
-        return ITEMS_CACHE.computeIfAbsent(stack.getItem(), item -> ExtraBotanyMixinConfig.VoidHerrschermatchModId.contains(item.delegate.name().getNamespace()));
+        return ITEMS_CACHE.computeIfAbsent(stack.getItem(), item -> Arrays.stream(MekceuMixinConfig.current().config.VoidHerrscherValidMods.get()).anyMatch(string -> item.delegate.name().getNamespace().contains(string)));
     }
 
     @Unique
@@ -80,7 +81,7 @@ public abstract class MixinEntityVoidHerrscher extends EntityCreature implements
                 player.inventory.setInventorySlotContents(i, ItemStack.EMPTY);
             }
         }
-        if (ExtraBotanyMixinConfig.VoidHerrscherenabledBaubles) {
+        if (MekceuMixinConfig.current().config.VoidHerrscherenabledBaubles.val()) {
             BaublesDisarmInventory(player);
         }
 
@@ -133,7 +134,7 @@ public abstract class MixinEntityVoidHerrscher extends EntityCreature implements
                     return false;
                 }
             }
-            if (ExtraBotanyMixinConfig.VoidHerrscherenabledBaubles) {
+            if (MekceuMixinConfig.current().config.VoidHerrscherenabledBaubles.val()) {
                 IItemHandler baubles = BaublesApi.getBaublesHandler(player);
                 for (int i = 0; i < baubles.getSlots(); i++) {
                     ItemStack stackAt = baubles.getStackInSlot(i);
