@@ -11,16 +11,12 @@ import thelm.packagedauto.tile.TileBase;
 import thelm.packageddraconic.block.BlockMarkedInjector;
 import thelm.packageddraconic.tile.TileMarkedInjector;
 
-@Mixin(TileMarkedInjector.class)
+@Mixin(value = TileMarkedInjector.class, remap = false)
 public abstract class MixinTileMarkedInjector extends TileBase implements ITierUpgradeable {
 
 
     @Shadow
     public abstract ItemStack getStackInPedestal();
-
-
-    @Shadow
-    public abstract void update();
 
     @Override
     public boolean CanInstalled() {
@@ -32,7 +28,6 @@ public abstract class MixinTileMarkedInjector extends TileBase implements ITierU
         if (tier == BaseTier.CREATIVE || tier == BaseTier.BASIC) {
             return false;
         }
-
         IBlockState block = world.getBlockState(getPos());
         if (block.getBlock() instanceof BlockMarkedInjector injector) {
             world.setBlockToAir(getPos());

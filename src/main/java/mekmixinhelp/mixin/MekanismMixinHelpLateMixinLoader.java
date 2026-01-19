@@ -23,6 +23,7 @@ public class MekanismMixinHelpLateMixinLoader implements ILateMixinLoader {
         addModdedMixinCFG("mixins.mekmixinhelp.thermalexpansion.json","thermalexpansion");
         addModdedMixinCFG("mixins.mekmixinhelp.draconicevolution.json","draconicevolution");
         addModdedMixinCFG("mixins.mekmixinhelp.packageddraconic.json","packageddraconic");
+        addModdedMixinCFG("mixins.mekmixinhelp.nc.json","nuclearcraft");
     }
 
     @Override

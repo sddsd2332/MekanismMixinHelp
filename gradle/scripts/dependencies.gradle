@@ -96,4 +96,5 @@ dependencies {
     implementation rfg.deobf("curse.maven:draconic-additions-314515:3514704")
     implementation rfg.deobf("curse.maven:packagedauto-308380:7329681")
     implementation rfg.deobf("curse.maven:packageddraconic-833931:6904341")
+    implementation rfg.deobf("curse.maven:nuclearcraft-overhauled-336895:6605808")
 }
