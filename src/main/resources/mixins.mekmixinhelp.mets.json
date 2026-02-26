@@ -1,0 +1,14 @@
+{
+  "package": "mekmixinhelp.mixin.mets",
+  "refmap": "mixins.mekmixinhelp.refmap.json",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "MixinAdvancedQuantumSuit",
+    "MixinHeavyQuantumSuit"
+  ],
+  "server": [],
+  "client": [
+  ]
+}

@@ -77,7 +77,7 @@ dependencies {
     runtimeOnly 'curse.maven:had-enough-characters-640802:4035773'
     runtimeOnly 'curse.maven:better-advancements-272515:2685984'
     runtimeOnly 'curse.maven:MmmMmmMmmMmm-225738:2503041'
-    implementation rfg.deobf(files('libs/Mekanism-CE-Unofficial-All-9.9.2.236-dev.jar'))
+    implementation rfg.deobf(files('libs/Mekanism-CE-Unofficial-All-9.9.2.240-dev.jar'))
     implementation rfg.deobf("curse.maven:baubles-227083:2518667")
     implementation rfg.deobf("curse.maven:botania-225643:3330934")
     implementation rfg.deobf("curse.maven:extrabotany-299086:3112313")
@@ -97,4 +97,5 @@ dependencies {
     implementation rfg.deobf("curse.maven:packagedauto-308380:7329681")
     implementation rfg.deobf("curse.maven:packageddraconic-833931:6904341")
     implementation rfg.deobf("curse.maven:nuclearcraft-overhauled-336895:6605808")
+    implementation rfg.deobf("curse.maven:more-electric-tools-366298:3491973")
 }

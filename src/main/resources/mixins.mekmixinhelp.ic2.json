@@ -1,0 +1,14 @@
+{
+  "package": "mekmixinhelp.mixin.ic2",
+  "refmap": "mixins.mekmixinhelp.refmap.json",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "MixinItemArmorHazmat",
+    "MixinItemArmorQuantumSuit"
+  ],
+  "server": [],
+  "client": [
+  ]
+}
