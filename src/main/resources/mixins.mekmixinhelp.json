@@ -8,10 +8,12 @@
     "MinxinEntityLivingBase",
     "MixinEntityEnderman",
     "MixinEntityPlayer",
+    "MixinEntityFishHook",
     "MixinNetHandlerPlayServer"
   ],
   "server": [],
   "client": [
-    "MixinEntityPlayerSP"
+    "MixinEntityPlayerSP",
+    "MixinRenderFish"
   ]
 }
