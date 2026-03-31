@@ -6,9 +6,11 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "MinxinEntityLivingBase",
+    "MixinEntity",
     "MixinEntityEnderman",
-    "MixinEntityPlayer",
     "MixinEntityFishHook",
+    "MixinEntityPlayer",
+    "MixinInventoryPlayer",
     "MixinNetHandlerPlayServer"
   ],
   "server": [],

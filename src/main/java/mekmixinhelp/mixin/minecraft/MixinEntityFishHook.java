@@ -1,6 +1,7 @@
 package mekmixinhelp.mixin.minecraft;
 
 import mekanism.api.gear.IModule;
+import mekanism.common.capabilities.Capabilities;
 import mekanism.common.MekanismModules;
 import mekanism.common.content.gear.IModuleContainerItem;
 import mekanism.common.item.ItemMekaFishingRod;
@@ -18,6 +19,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +40,25 @@ public abstract class MixinEntityFishHook extends Entity {
 
     public MixinEntityFishHook(World worldIn) {
         super(worldIn);
+    }
+
+    @Inject(method = "shouldStopFishing", at = @At("HEAD"), cancellable = true)
+    public void shouldStopFishingForMekaHook(CallbackInfoReturnable<Boolean> cir) {
+        Capabilities.getMekaFishCap(this).ifPresent(iMekaFishHook -> {
+            if (!iMekaFishHook.isMekaFishHook() || angler == null) {
+                return;
+            }
+            ItemStack mainHand = angler.getHeldItemMainhand();
+            ItemStack offHand = angler.getHeldItemOffhand();
+            boolean hasMekaMain = !mainHand.isEmpty() && mainHand.getItem() instanceof ItemMekaFishingRod;
+            boolean hasMekaOff = !offHand.isEmpty() && offHand.getItem() instanceof ItemMekaFishingRod;
+            if (hasMekaMain || hasMekaOff) {
+                cir.setReturnValue(false);
+                return;
+            }
+            setDead();
+            cir.setReturnValue(true);
+        });
     }
 
     @Redirect(method = "catchingFish", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/projectile/EntityFishHook;ticksCaughtDelay:I", ordinal = 3, opcode = Opcodes.PUTFIELD))
