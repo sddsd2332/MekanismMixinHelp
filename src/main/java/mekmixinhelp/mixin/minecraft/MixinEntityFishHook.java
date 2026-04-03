@@ -1,10 +1,10 @@
 package mekmixinhelp.mixin.minecraft;
 
 import mekanism.api.gear.IModule;
-import mekanism.common.capabilities.Capabilities;
+import mekanism.api.gear.IitemfishRod;
 import mekanism.common.MekanismModules;
+import mekanism.common.capabilities.Capabilities;
 import mekanism.common.content.gear.IModuleContainerItem;
-import mekanism.common.item.ItemMekaFishingRod;
 import mekanism.common.util.StackUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,8 +18,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
@@ -50,8 +50,8 @@ public abstract class MixinEntityFishHook extends Entity {
             }
             ItemStack mainHand = angler.getHeldItemMainhand();
             ItemStack offHand = angler.getHeldItemOffhand();
-            boolean hasMekaMain = !mainHand.isEmpty() && mainHand.getItem() instanceof ItemMekaFishingRod;
-            boolean hasMekaOff = !offHand.isEmpty() && offHand.getItem() instanceof ItemMekaFishingRod;
+            boolean hasMekaMain = !mainHand.isEmpty() && mainHand.getItem() instanceof IitemfishRod && mainHand.getItem() instanceof IModuleContainerItem;
+            boolean hasMekaOff = !offHand.isEmpty() && offHand.getItem() instanceof IitemfishRod && offHand.getItem() instanceof IModuleContainerItem;
             if (hasMekaMain || hasMekaOff) {
                 cir.setReturnValue(false);
                 return;
@@ -75,7 +75,7 @@ public abstract class MixinEntityFishHook extends Entity {
         if (isMekfishRod()) {
             if (angler != null) {
                 ItemStack stack = angler.getHeldItemMainhand();
-                if (!stack.isEmpty() && stack.getItem() instanceof IModuleContainerItem item) {
+                if (!stack.isEmpty() && stack.getItem() instanceof IitemfishRod && stack.getItem() instanceof IModuleContainerItem item) {
                     IModule<?> speed = item.getModule(stack, MekanismModules.FISHING_SPEED_UNIT);
                     if (speed != null && speed.isEnabled()) {
                         ticksCatchableDelay = Math.max(ticksCatchableDelay * (1 - (speed.getInstalledCount() / speed.getData().getMaxStackSize())), 1);
@@ -89,7 +89,7 @@ public abstract class MixinEntityFishHook extends Entity {
     private boolean isMekfishRod() {
         if (angler != null) {
             ItemStack stack = angler.getHeldItemMainhand();
-            if (!stack.isEmpty() && stack.getItem() instanceof IModuleContainerItem item) {
+            if (!stack.isEmpty() && stack.getItem() instanceof IitemfishRod && stack.getItem() instanceof IModuleContainerItem item) {
                 return item.isModuleEnabled(stack, MekanismModules.FISHING_SPEED_UNIT);
             }
         }
@@ -103,7 +103,7 @@ public abstract class MixinEntityFishHook extends Entity {
         List<ItemStack> drops = new ArrayList<>();
         if (angler != null) {
             ItemStack stack = angler.getHeldItemMainhand();
-            if (!stack.isEmpty() && stack.getItem() instanceof ItemMekaFishingRod rod) {
+            if (!stack.isEmpty() && stack.getItem() instanceof IitemfishRod && stack.getItem() instanceof IModuleContainerItem rod) {
                 IModule<?> fish = rod.getModule(stack, MekanismModules.FISHING_MULTIPLE_UNIT);
                 if (fish != null && fish.isEnabled()) {
                     int count = (fish.getInstalledCount() / fish.getData().getMaxStackSize());
