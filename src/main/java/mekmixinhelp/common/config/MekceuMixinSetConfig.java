@@ -24,6 +24,8 @@ public class MekceuMixinSetConfig extends BaseConfig {
     public final StringListOption VoidHerrscherValidMods =new StringListOption(this,"Herrscher of the Void Whitelist Mod id", new String[]{"botania", "extrabotany", "minecraft"}, "Whitelist the Mod Id associated with the disarming of ExtraBotany.");
     //空律饰品栏相关
     public BooleanOption VoidHerrscherenabledBaubles = new BooleanOption(this, "Herrscher of the Void Baubles checked", false, "Herrscher of the Void was allowed to inspect Baubles");
+    //取消清空物品（WIP）
+    public BooleanOption ProtectMagneticItemFromEmptySet = new BooleanOption(this, "Protect Magnetic Item From EMPTY Set", false, "Cancel direct setInventorySlotContents(index, ItemStack.EMPTY) for magnetic items when enabled.[WIP]").setRequiresGameRestart();
 
     @Override
     public String getCategory() {

@@ -1,5 +1,6 @@
 package mekmixinhelp.mixin.minecraft;
 
+import mekmixinhelp.common.config.MekceuMixinConfig;
 import mekmixinhelp.common.util.MagneticDropGuardAccess;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -21,6 +22,12 @@ public abstract class MixinEntity {
     private void skipSuppressedDrop(ItemStack stack, float offsetY, CallbackInfoReturnable<EntityItem> cir) {
         Entity self = (Entity) (Object) this;
         if (!(self instanceof EntityPlayer player) || player.world.isRemote || stack.isEmpty()) {
+            return;
+        }
+        if (!MekceuMixinConfig.current().config.ProtectMagneticItemFromEmptySet.val()) {
+            if (player instanceof MagneticDropGuardAccess access) {
+                access.mekmixinhelp$clearSuppressedDrops();
+            }
             return;
         }
         if (player instanceof MagneticDropGuardAccess access && access.mekmixinhelp$consumeSuppressedDrop(stack, player.ticksExisted)) {

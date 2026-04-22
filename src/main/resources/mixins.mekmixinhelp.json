@@ -15,7 +15,9 @@
   ],
   "server": [],
   "client": [
+    "LayerArmorBaseMixin",
     "MixinEntityPlayerSP",
-    "MixinRenderFish"
+    "MixinRenderFish",
+    "RenderItemMixin"
   ]
 }

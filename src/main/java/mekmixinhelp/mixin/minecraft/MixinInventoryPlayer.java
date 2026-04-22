@@ -1,6 +1,7 @@
 package mekmixinhelp.mixin.minecraft;
 
 import mekanism.api.gear.Magnetic;
+import mekmixinhelp.common.config.MekceuMixinConfig;
 import mekmixinhelp.common.util.MagneticDropGuardAccess;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -33,6 +34,13 @@ public abstract class MixinInventoryPlayer {
 
     @Inject(method = "setInventorySlotContents", at = @At("HEAD"), cancellable = true)
     private void preventMagneticItemBeingCleared(int index, ItemStack stack, CallbackInfo ci) {
+        if (!MekceuMixinConfig.current().config.ProtectMagneticItemFromEmptySet.val()) {
+            if (this.player instanceof MagneticDropGuardAccess access) {
+                access.mekmixinhelp$clearSuppressedDrops();
+            }
+            return;
+        }
+
         if (!stack.isEmpty()) {
             return;
         }
