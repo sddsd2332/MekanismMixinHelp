@@ -4,10 +4,9 @@ import baubles.api.BaublesApi;
 import com.meteor.extrabotany.api.entity.IEntityWithShield;
 import com.meteor.extrabotany.common.core.config.ConfigHandler;
 import com.meteor.extrabotany.common.entity.gaia.EntityVoidHerrscher;
-import mekanism.api.gear.Magnetic;
 import mekmixinhelp.common.config.MekceuMixinConfig;
+import mekmixinhelp.common.util.DisarmDropHelper;
 import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -72,13 +71,7 @@ public abstract class MixinEntityVoidHerrscher extends EntityCreature implements
                 continue;
             }
             if (!match(stackAt)) {
-                if (stackAt.getItem() instanceof Magnetic magnetic && magnetic.isMagnetic(stackAt)) {
-                    continue;
-                } else {
-                    EntityItem item = player.entityDropItem(stackAt, 0.0F);
-                    item.setPickupDelay(90);
-                }
-                player.inventory.setInventorySlotContents(i, ItemStack.EMPTY);
+                DisarmDropHelper.dropInventorySlot(player, i, true);
             }
         }
         if (MekceuMixinConfig.current().config.VoidHerrscherenabledBaubles.val()) {
@@ -97,13 +90,7 @@ public abstract class MixinEntityVoidHerrscher extends EntityCreature implements
                 continue;
             }
             if (!match(stack)) {
-                if (stack.getItem() instanceof Magnetic magnetic && magnetic.isMagnetic(stack)) {
-                    continue;
-                } else {
-                    EntityItem item = player.entityDropItem(stack, 0.0F);
-                    item.setPickupDelay(90);
-                }
-                BaublesApi.getBaublesHandler(player).setStackInSlot(i, ItemStack.EMPTY);
+                DisarmDropHelper.dropItemHandlerSlot(player, baubles, i);
             }
         }
     }
@@ -128,7 +115,7 @@ public abstract class MixinEntityVoidHerrscher extends EntityCreature implements
                     continue;
                 }
                 if (!match(stackAt)) {
-                    if (stackAt.getItem() instanceof Magnetic magnetic && magnetic.isMagnetic(stackAt)) {
+                    if (DisarmDropHelper.shouldKeep(stackAt)) {
                         continue;
                     }
                     return false;
@@ -142,7 +129,7 @@ public abstract class MixinEntityVoidHerrscher extends EntityCreature implements
                         continue;
                     }
                     if (!match(stackAt)) {
-                        if (stackAt.getItem() instanceof Magnetic magnetic && magnetic.isMagnetic(stackAt)) {
+                        if (DisarmDropHelper.shouldKeep(stackAt)) {
                             continue;
                         }
                         return false;

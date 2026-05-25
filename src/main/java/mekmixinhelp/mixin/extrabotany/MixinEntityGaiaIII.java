@@ -4,10 +4,9 @@ import baubles.api.BaublesApi;
 import com.meteor.extrabotany.api.entity.IEntityWithShield;
 import com.meteor.extrabotany.common.core.config.ConfigHandler;
 import com.meteor.extrabotany.common.entity.gaia.EntityGaiaIII;
-import mekanism.api.gear.Magnetic;
 import mekmixinhelp.common.config.MekceuMixinConfig;
+import mekmixinhelp.common.util.DisarmDropHelper;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -23,8 +22,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import vazkii.botania.api.boss.IBotaniaBoss;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 @Mixin(EntityGaiaIII.class)
 public abstract class MixinEntityGaiaIII extends EntityLiving implements IBotaniaBoss, IEntityWithShield, IEntityAdditionalSpawnData {
@@ -44,13 +46,7 @@ public abstract class MixinEntityGaiaIII extends EntityLiving implements IBotani
                 continue;
             }
             if (!match(stackAt)) {
-                if (stackAt.getItem() instanceof Magnetic magnetic && magnetic.isMagnetic(stackAt)) {
-                    continue;
-                } else {
-                    EntityItem item = player.entityDropItem(stackAt, 0.0F);
-                    item.setPickupDelay(90);
-                }
-                player.inventory.setInventorySlotContents(i, ItemStack.EMPTY);
+                DisarmDropHelper.dropInventorySlot(player, i, true);
             }
         }
 
@@ -69,13 +65,7 @@ public abstract class MixinEntityGaiaIII extends EntityLiving implements IBotani
                 continue;
             }
             if (!match(stack)) {
-                if (stack.getItem() instanceof Magnetic magnetic && magnetic.isMagnetic(stack)) {
-                    continue;
-                } else {
-                    EntityItem item = player.entityDropItem(stack, 0.0F);
-                    item.setPickupDelay(90);
-                }
-                BaublesApi.getBaublesHandler(player).setStackInSlot(i, ItemStack.EMPTY);
+                DisarmDropHelper.dropItemHandlerSlot(player, baubles, i);
             }
         }
     }
@@ -100,7 +90,7 @@ public abstract class MixinEntityGaiaIII extends EntityLiving implements IBotani
                     continue;
                 }
                 if (!match(stackAt)) {
-                    if (stackAt.getItem() instanceof Magnetic magnetic && magnetic.isMagnetic(stackAt)) {
+                    if (DisarmDropHelper.shouldKeep(stackAt)) {
                         continue;
                     }
                     return false;
@@ -115,7 +105,7 @@ public abstract class MixinEntityGaiaIII extends EntityLiving implements IBotani
                         continue;
                     }
                     if (!match(stackAt)) {
-                        if (stackAt.getItem() instanceof Magnetic magnetic && magnetic.isMagnetic(stackAt)) {
+                        if (DisarmDropHelper.shouldKeep(stackAt)) {
                             continue;
                         }
                         return false;
