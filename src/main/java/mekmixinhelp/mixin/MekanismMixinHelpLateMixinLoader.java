@@ -18,7 +18,6 @@ public class MekanismMixinHelpLateMixinLoader implements ILateMixinLoader {
     static {
         addModdedMixinCFG("mixins.mekmixinhelp.extrabotany.json", "extrabotany");
         addModdedMixinCFG("mixins.mekmixinhelp.tconevo.json", "tconevo");
-        addModdedMixinCFG("mixins.mekmixinhelp.jei.json","jei");
         addModdedMixinCFG("mixins.mekmixinhelp.mekeng.json","mekeng");
         addModdedMixinCFG("mixins.mekmixinhelp.thermalexpansion.json","thermalexpansion");
         addModdedMixinCFG("mixins.mekmixinhelp.draconicevolution.json","draconicevolution");

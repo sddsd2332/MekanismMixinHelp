@@ -1,8 +1,10 @@
 package mekmixinhelp.mixin.packageddraconic;
 
-import mekanism.common.base.ITierUpgradeable;
+import mekanism.common.base.IUpgradeableTile;
 import mekanism.common.tier.BaseTier;
+import mekanism.common.upgrade.IUpgradeData;
 import mekmixinhelp.common.config.MekceuMixinConfig;
+import mekmixinhelp.common.upgrade.DraconicPedestalUpgradeData;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -11,37 +13,63 @@ import thelm.packagedauto.tile.TileBase;
 import thelm.packageddraconic.block.BlockMarkedInjector;
 import thelm.packageddraconic.tile.TileMarkedInjector;
 
+import javax.annotation.Nullable;
+
 @Mixin(value = TileMarkedInjector.class, remap = false)
-public abstract class MixinTileMarkedInjector extends TileBase implements ITierUpgradeable {
+public abstract class MixinTileMarkedInjector extends TileBase implements IUpgradeableTile {
 
 
     @Shadow
     public abstract ItemStack getStackInPedestal();
 
     @Override
-    public boolean CanInstalled() {
-        return getStackInPedestal().isEmpty() && MekceuMixinConfig.current().config.PackagedDEUpgrade.val();
+    public boolean canInstallUpgrade(BaseTier upgradeTier) {
+        return upgradeTier != BaseTier.CREATIVE && upgradeTier != BaseTier.BASIC
+                && getStackInPedestal().isEmpty()
+                && MekceuMixinConfig.current().config.PackagedDEUpgrade.val()
+                && getUpgradeResult(upgradeTier) != null;
     }
 
+    @Shadow
+    public abstract void setStackInPedestal(ItemStack stack);
+
+    @Nullable
     @Override
-    public boolean upgrade(BaseTier tier) {
-        if (tier == BaseTier.CREATIVE || tier == BaseTier.BASIC) {
-            return false;
+    public IBlockState getUpgradeResult(BaseTier upgradeTier) {
+        if (upgradeTier == BaseTier.CREATIVE || upgradeTier == BaseTier.BASIC || world == null || getPos() == null) {
+            return null;
         }
         IBlockState block = world.getBlockState(getPos());
         if (block.getBlock() instanceof BlockMarkedInjector injector) {
-            world.setBlockToAir(getPos());
-            if (tier == BaseTier.ADVANCED) {
-                world.setBlockState(getPos(), BlockMarkedInjector.WYVERN.getStateFromMeta(injector.getMetaFromState(block)));
-            } else if (tier == BaseTier.ELITE) {
-                world.setBlockState(getPos(), BlockMarkedInjector.DRACONIC.getStateFromMeta(injector.getMetaFromState(block)));
-            } else if (tier == BaseTier.ULTIMATE) {
-                world.setBlockState(getPos(), BlockMarkedInjector.CHAOTIC.getStateFromMeta(injector.getMetaFromState(block)));
+            if (upgradeTier.ordinal() <= injector.tier) {
+                return null;
             }
-            if (world.getTileEntity(getPos()) instanceof TileMarkedInjector te) {
-                te.setStackInPedestal(getStackInPedestal());
-                return true;
+            int meta = injector.getMetaFromState(block);
+            if (upgradeTier == BaseTier.ADVANCED) {
+                return BlockMarkedInjector.WYVERN.getStateFromMeta(meta);
+            } else if (upgradeTier == BaseTier.ELITE) {
+                return BlockMarkedInjector.DRACONIC.getStateFromMeta(meta);
+            } else if (upgradeTier == BaseTier.ULTIMATE) {
+                return BlockMarkedInjector.CHAOTIC.getStateFromMeta(meta);
             }
+        }
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public IUpgradeData getUpgradeData(BaseTier upgradeTier) {
+        if (!canInstallUpgrade(upgradeTier)) {
+            return null;
+        }
+        return new DraconicPedestalUpgradeData(getStackInPedestal());
+    }
+
+    @Override
+    public boolean parseUpgradeData(IUpgradeData upgradeData) {
+        if (upgradeData instanceof DraconicPedestalUpgradeData data) {
+            setStackInPedestal(data.pedestalStack.copy());
+            return true;
         }
         return false;
     }
