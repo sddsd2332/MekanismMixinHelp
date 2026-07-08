@@ -25,6 +25,7 @@ public class MekanismMixinHelpLateMixinLoader implements ILateMixinLoader {
         addModdedMixinCFG("mixins.mekmixinhelp.nc.json","nuclearcraft");
         addModdedMixinCFG("mixins.mekmixinhelp.ic2.json","ic2");
         addModdedMixinCFG("mixins.mekmixinhelp.mets.json","mets");
+        addModdedMixinCFG("mixins.mekmixinhelp.jei.json","jei");
     }
 
     @Override

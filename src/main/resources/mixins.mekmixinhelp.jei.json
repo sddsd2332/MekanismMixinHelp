@@ -1,0 +1,16 @@
+{
+  "package": "mekmixinhelp.mixin.jei",
+  "refmap": "mixins.mekmixinhelp.refmap.json",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_8",
+  "required": false,
+  "mixins": [],
+  "server": [],
+  "client": [
+    "MixinIngredientGridWithNavigation",
+    "MixinBookmarkGridWithNavigation",
+    "MixinLeftAreaDispatcher",
+    "MixinIngredientListOverlay"
+  ]
+}
