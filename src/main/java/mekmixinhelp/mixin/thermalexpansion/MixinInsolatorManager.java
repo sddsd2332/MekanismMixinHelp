@@ -24,6 +24,9 @@ public class MixinInsolatorManager {
     @Inject(method = "addRecipe(IILnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ItemStack;ILcofh/thermalexpansion/util/managers/machine/InsolatorManager$Type;)Lcofh/thermalexpansion/util/managers/machine/InsolatorManager$InsolatorRecipe;", at = @At("HEAD"))
     private static void addMekanismFarm(int energy, int water, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, Type type, CallbackInfoReturnable<InsolatorRecipe> cir) {
         if (secondaryInput == ItemFertilizer.fertilizerBasic || secondaryInput == ItemFertilizer.fertilizerRich || secondaryInput == ItemFertilizer.fertilizerFlux) {
+            if (primaryInput.isEmpty() || primaryOutput.isEmpty()) {
+                return;
+            }
             if (!RecipeHandler.Recipe.ORGANIC_FARM.containsRecipe(primaryInput)) {
                 int waterMultiplier = type == Type.TREE ? 6 : 3;
                 if (!secondaryOutput.isEmpty()) {
